@@ -1,9 +1,0 @@
-GET POST  /users
-GET PUT DELETE /users/{id}
-GET POST /users/{id}/tasks
-GET PUT DELETE /users/{id}/tasks/{id}
-
-+
-DEFINITION:
-USER
-TASK
