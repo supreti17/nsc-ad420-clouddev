@@ -37,23 +37,12 @@
           "application/xml",
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "405": {
-            "description": "No Users Found"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UsersList"
+            }
           }
         }
       },
@@ -85,7 +74,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "integer"
+            }
           },
           "405": {
             "description": "Invalid input"
@@ -122,9 +114,6 @@
               "$ref": "#/definitions/User"
             }
           },
-          "400": {
-            "description": "Invalid User ID"
-          },
           "404": {
             "description": "User not found"
           }
@@ -137,13 +126,6 @@
         "summary": "Updates a user by ID",
         "description": "",
         "operationId": "updateUserById",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -154,14 +136,20 @@
             "format": "int64"
           },
           {
-            "name": "name",
-            "in": "formData",
-            "description": "Updated name of the user",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "404": {
+            "description": "User not found"
+          },
           "405": {
             "description": "Invalid input"
           }
@@ -174,10 +162,6 @@
         "summary": "Deletes a user by ID",
         "description": "",
         "operationId": "deleteUserById",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -189,8 +173,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid User ID"
+          "200": {
+            "description": "Successfully deleted"
           },
           "404": {
             "description": "User not found"
@@ -206,9 +190,6 @@
         "summary": "Get a list of tasks for a specific user",
         "description": "",
         "operationId": "getUsersTasksList",
-        "consumes": [
-          "multipart/form-data"
-        ],
         "produces": [
           "application/xml",
           "application/json"
@@ -225,10 +206,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TasksList"
+            }
           },
-          "405": {
-            "description": "No Users Found"
+          "404": {
+            "description": "No tasks Found"
           }
         }
       },
@@ -239,18 +223,11 @@
         "summary": "Add a new task",
         "description": "",
         "operationId": "addATask",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "",
+            "description": "User id",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -267,7 +244,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "404": {
+            "description": "Not Found"
           },
           "405": {
             "description": "Invalid input"
@@ -312,9 +295,6 @@
               "$ref": "#/definitions/Task"
             }
           },
-          "400": {
-            "description": "Invalid Task ID"
-          },
           "404": {
             "description": "Task not found"
           }
@@ -327,13 +307,6 @@
         "summary": "Updates a user task by ID",
         "description": "",
         "operationId": "updateUserTaskById",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -352,28 +325,20 @@
             "format": "int64"
           },
           {
-            "name": "title",
-            "in": "formData",
-            "description": "Updated title of the task",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "formData",
-            "description": "Updated description of the task",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "dueDate",
-            "in": "formData",
-            "description": "Updated due date of the task",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
           }
         ],
         "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "404": {
+            "description": "Task not found"
+          },
           "405": {
             "description": "Invalid input"
           }
@@ -386,10 +351,6 @@
         "summary": "Deletes a user task by ID",
         "description": "",
         "operationId": "deleteUserTaskById",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -409,8 +370,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid task ID"
+          "200": {
+            "description": "Ok"
           },
           "404": {
             "description": "Task not found"
@@ -420,6 +381,18 @@
     }
   },
   "definitions": {
+    "UsersList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/User"
+      }
+    },
+    "TasksList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Task"
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
